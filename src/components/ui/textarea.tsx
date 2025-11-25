@@ -12,7 +12,7 @@ export const Textarea = forwardRef<
     ref={ref}
     className={twMerge(
       "w-full rounded-xl border border-caramel/30 bg-white/90 px-4 py-2 text-sm text-cocoa shadow-sm placeholder:text-cocoa/60 focus:border-caramel focus:outline-none focus:ring-2 focus:ring-caramel/30",
-      className,
+      className
     )}
     {...props}
   />

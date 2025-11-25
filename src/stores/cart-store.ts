@@ -19,7 +19,7 @@ type CartActions = {
   updateQuantity: (
     productId: string,
     variationId: string,
-    quantity: number,
+    quantity: number
   ) => void;
   clear: () => void;
 };
@@ -33,7 +33,7 @@ export const useCartStore = create<CartState & CartActions>((set) => ({
       const existing = state.items.find(
         (line) =>
           line.productId === item.productId &&
-          line.variationId === item.variationId,
+          line.variationId === item.variationId
       );
 
       if (existing) {
@@ -41,7 +41,7 @@ export const useCartStore = create<CartState & CartActions>((set) => ({
           items: state.items.map((line) =>
             line === existing
               ? { ...line, quantity: Math.min(99, line.quantity + quantity) }
-              : line,
+              : line
           ),
         };
       }
@@ -60,7 +60,7 @@ export const useCartStore = create<CartState & CartActions>((set) => ({
     set((state) => ({
       items: state.items.filter(
         (line) =>
-          !(line.productId === productId && line.variationId === variationId),
+          !(line.productId === productId && line.variationId === variationId)
       ),
     })),
   updateQuantity: (productId, variationId, quantity) =>
@@ -68,7 +68,7 @@ export const useCartStore = create<CartState & CartActions>((set) => ({
       items: state.items.map((line) =>
         line.productId === productId && line.variationId === variationId
           ? { ...line, quantity: Math.max(1, Math.min(99, quantity)) }
-          : line,
+          : line
       ),
     })),
   clear: () => set(initialState),
@@ -78,4 +78,7 @@ export const selectCartCount = (state: CartState) =>
   state.items.reduce((total, item) => total + item.quantity, 0);
 
 export const selectCartTotal = (state: CartState) =>
-  state.items.reduce((total, item) => total + item.priceCents * item.quantity, 0);
+  state.items.reduce(
+    (total, item) => total + item.priceCents * item.quantity,
+    0
+  );

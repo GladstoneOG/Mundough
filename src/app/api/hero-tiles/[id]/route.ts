@@ -15,7 +15,10 @@ export async function PATCH(request: Request, { params }: Params) {
   const body = await request.json();
   const parsed = heroTileSchema.safeParse(body);
   if (!parsed.success) {
-    return NextResponse.json({ message: parsed.error.message }, { status: 400 });
+    return NextResponse.json(
+      { message: parsed.error.message },
+      { status: 400 }
+    );
   }
 
   const tile = await prisma.heroTile.findUnique({ where: { id: params.id } });
@@ -48,11 +51,16 @@ export async function DELETE(request: Request, { params }: Params) {
 
   await prisma.heroTile.delete({ where: { id: params.id } });
 
-  const remaining = await prisma.heroTile.findMany({ orderBy: { order: "asc" } });
+  const remaining = await prisma.heroTile.findMany({
+    orderBy: { order: "asc" },
+  });
   await prisma.$transaction(
     remaining.map((tile, index) =>
-      prisma.heroTile.update({ where: { id: tile.id }, data: { order: index + 1 } }),
-    ),
+      prisma.heroTile.update({
+        where: { id: tile.id },
+        data: { order: index + 1 },
+      })
+    )
   );
 
   return NextResponse.json({ ok: true });

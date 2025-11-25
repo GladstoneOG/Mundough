@@ -14,7 +14,7 @@ export async function reorderHeroTiles(tileId: string, desiredIndex: number) {
       prisma.heroTile.update({
         where: { id: tile.id },
         data: { order: index + 1 },
-      }),
-    ),
+      })
+    )
   );
 }

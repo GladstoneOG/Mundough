@@ -7,9 +7,7 @@ export const heroTileSchema = z.object({
     .string()
     .min(4, "Add a short teaser")
     .max(160, "Keep this intro snappy"),
-  longText: z
-    .string()
-    .min(10, "Give guests a bit more to savor"),
+  longText: z.string().min(10, "Give guests a bit more to savor"),
   imageUrl: z.string().url("Enter a valid image URL"),
   order: z.number().int().min(0).optional(),
 });

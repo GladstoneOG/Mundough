@@ -42,8 +42,8 @@ export const useAdminStore = create<AdminState & AdminActions>()(
           state.isUnlocked = false;
         }
       },
-    },
-  ),
+    }
+  )
 );
 
 export const getAdminPinHash = () => {

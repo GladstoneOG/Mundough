@@ -14,7 +14,13 @@ type DialogProps = {
   footer?: React.ReactNode;
 };
 
-export function Dialog({ open, onClose, title, children, footer }: DialogProps) {
+export function Dialog({
+  open,
+  onClose,
+  title,
+  children,
+  footer,
+}: DialogProps) {
   const container = useMemo(() => {
     if (typeof window === "undefined") return null;
     const el = document.createElement("div");
@@ -60,10 +66,14 @@ export function Dialog({ open, onClose, title, children, footer }: DialogProps) 
             <X className="h-4 w-4" />
           </Button>
         </div>
-        <div className={twMerge("mt-6 space-y-4 text-sm text-cocoa/80")}>{children}</div>
-        {footer ? <div className="mt-6 flex justify-end gap-3">{footer}</div> : null}
+        <div className={twMerge("mt-6 space-y-4 text-sm text-cocoa/80")}>
+          {children}
+        </div>
+        {footer ? (
+          <div className="mt-6 flex justify-end gap-3">{footer}</div>
+        ) : null}
       </div>
     </div>,
-    container,
+    container
   );
 }

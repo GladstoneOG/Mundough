@@ -10,10 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Dialog } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import {
-  type CheckoutInput,
-  checkoutSchema,
-} from "@/lib/validators";
+import { type CheckoutInput, checkoutSchema } from "@/lib/validators";
 import {
   selectCartCount,
   selectCartTotal,
@@ -77,12 +74,15 @@ export function ShopExperience({ products }: Props) {
       body: JSON.stringify(payload),
     });
 
-    const body = (await response.json().catch(() => null)) as
-      | { message?: string; redirectUrl?: string }
-      | null;
+    const body = (await response.json().catch(() => null)) as {
+      message?: string;
+      redirectUrl?: string;
+    } | null;
 
     if (!response.ok) {
-      toast.error(body?.message ?? "We couldn't prepare your order. Try again.");
+      toast.error(
+        body?.message ?? "We couldn't prepare your order. Try again."
+      );
       return;
     }
 
@@ -106,7 +106,7 @@ export function ShopExperience({ products }: Props) {
         ...item,
         lineTotal: item.priceCents * item.quantity,
       })),
-    [items],
+    [items]
   );
 
   return (
@@ -115,7 +115,9 @@ export function ShopExperience({ products }: Props) {
         <div className="space-y-2">
           <h1 className="font-serif text-4xl font-semibold">Shop Mundough</h1>
           <p className="text-cocoa/70">
-            {"Choose your cravings, add a note, and we'll confirm availability and delivery windows with you directly."}
+            {
+              "Choose your cravings, add a note, and we'll confirm availability and delivery windows with you directly."
+            }
           </p>
         </div>
         <Button onClick={() => setCartOpen(true)} className="relative">
@@ -143,7 +145,9 @@ export function ShopExperience({ products }: Props) {
                 sizes="(max-width: 768px) 100vw, 540px"
               />
               <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/50 to-transparent p-6 text-cream">
-                <h2 className="font-serif text-3xl font-semibold">{product.title}</h2>
+                <h2 className="font-serif text-3xl font-semibold">
+                  {product.title}
+                </h2>
               </div>
             </div>
             <div className="flex flex-grow flex-col gap-6 p-6">
@@ -176,7 +180,7 @@ export function ShopExperience({ products }: Props) {
                               variationName: variation.name,
                               priceCents: variation.priceCents,
                             },
-                            1,
+                            1
                           );
                           toast.success(`${variation.name} added`);
                         }}
@@ -221,7 +225,9 @@ export function ShopExperience({ products }: Props) {
                 className="flex items-center justify-between gap-4 rounded-2xl bg-cream/80 px-4 py-3"
               >
                 <div>
-                  <p className="text-sm font-semibold text-cocoa">{item.productTitle}</p>
+                  <p className="text-sm font-semibold text-cocoa">
+                    {item.productTitle}
+                  </p>
                   <p className="text-xs text-cocoa/60">{item.variationName}</p>
                   <p className="text-xs text-cocoa/70">
                     {currency.format(item.priceCents / 100)} each
@@ -239,7 +245,7 @@ export function ShopExperience({ products }: Props) {
                         updateQuantity(
                           item.productId,
                           item.variationId,
-                          Number(event.target.value) || 1,
+                          Number(event.target.value) || 1
                         )
                       }
                       className="h-9 w-16 text-center"
@@ -275,7 +281,11 @@ export function ShopExperience({ products }: Props) {
         title="Checkout"
         footer={
           <>
-            <Button type="button" variant="outline" onClick={() => setCheckoutOpen(false)}>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => setCheckoutOpen(false)}
+            >
               Cancel
             </Button>
             <Button type="button" onClick={() => onSubmit()}>
@@ -286,7 +296,9 @@ export function ShopExperience({ products }: Props) {
       >
         <form className="space-y-4" onSubmit={onSubmit}>
           <p className="text-sm text-cocoa/60">
-            {"We will redirect you to WhatsApp with the order summary so you can confirm the details."}
+            {
+              "We will redirect you to WhatsApp with the order summary so you can confirm the details."
+            }
           </p>
           <div className="grid gap-2">
             <label className="text-sm font-medium text-cocoa/80" htmlFor="name">
@@ -300,7 +312,10 @@ export function ShopExperience({ products }: Props) {
             ) : null}
           </div>
           <div className="grid gap-2">
-            <label className="text-sm font-medium text-cocoa/80" htmlFor="email">
+            <label
+              className="text-sm font-medium text-cocoa/80"
+              htmlFor="email"
+            >
               Email
             </label>
             <Input id="email" type="email" {...form.register("email")} />
@@ -311,7 +326,10 @@ export function ShopExperience({ products }: Props) {
             ) : null}
           </div>
           <div className="grid gap-2">
-            <label className="text-sm font-medium text-cocoa/80" htmlFor="phone">
+            <label
+              className="text-sm font-medium text-cocoa/80"
+              htmlFor="phone"
+            >
               Phone number
             </label>
             <Input id="phone" {...form.register("phone")} />
@@ -322,7 +340,10 @@ export function ShopExperience({ products }: Props) {
             ) : null}
           </div>
           <div className="grid gap-2">
-            <label className="text-sm font-medium text-cocoa/80" htmlFor="address">
+            <label
+              className="text-sm font-medium text-cocoa/80"
+              htmlFor="address"
+            >
               Delivery address or pickup preference
             </label>
             <Textarea id="address" rows={3} {...form.register("address")} />
@@ -333,7 +354,10 @@ export function ShopExperience({ products }: Props) {
             ) : null}
           </div>
           <div className="grid gap-2">
-            <label className="text-sm font-medium text-cocoa/80" htmlFor="notes">
+            <label
+              className="text-sm font-medium text-cocoa/80"
+              htmlFor="notes"
+            >
               Notes (allergies, timing, favorite flavors)
             </label>
             <Textarea id="notes" rows={3} {...form.register("notes")} />

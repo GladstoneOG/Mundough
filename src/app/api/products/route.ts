@@ -18,7 +18,10 @@ export async function POST(request: Request) {
   const body = await request.json();
   const parsed = productSchema.safeParse(body);
   if (!parsed.success) {
-    return NextResponse.json({ message: parsed.error.message }, { status: 400 });
+    return NextResponse.json(
+      { message: parsed.error.message },
+      { status: 400 }
+    );
   }
 
   const { title, description, imageUrl, isActive, variations } = parsed.data;

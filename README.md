@@ -15,36 +15,36 @@ Artisan cookie storefront built with Next.js 16 App Router, Prisma, and Tailwind
 
 1. Install dependencies:
 
-	```bash
-	npm install
-	```
+   ```bash
+   npm install
+   ```
 
 2. Copy `.env.example` to `.env` and fill in the values described below.
 
 3. Push the Prisma schema to your database once you have a `DATABASE_URL`:
 
-	```bash
-	npm run db:push
-	```
+   ```bash
+   npm run db:push
+   ```
 
 4. Start the dev server:
 
-	```bash
-	npm run dev
-	```
+   ```bash
+   npm run dev
+   ```
 
-	The site runs at [http://localhost:3000](http://localhost:3000).
+   The site runs at [http://localhost:3000](http://localhost:3000).
 
 ## Required environment variables
 
-| Name | Description |
-| --- | --- |
-| `DATABASE_URL` | Postgres connection string (Vercel Postgres/Neon recommended). |
-| `NEXT_PUBLIC_ADMIN_PIN_HASH` | SHA-256 hash of the hidden admin PIN. |
-| `NEXT_PUBLIC_WHATSAPP_NUMBER` | WhatsApp number (digits only, include country code) receiving orders. You can also set `WHATSAPP_NUMBER` if you prefer a server-only env. |
-| `UPLOADTHING_SECRET` | UploadThing server secret. |
-| `UPLOADTHING_APP_ID` | UploadThing app ID. |
-| `NEXT_PUBLIC_UPLOADTHING_APP_ID` | Same value as `UPLOADTHING_APP_ID`, exposed to the client. |
+| Name                             | Description                                                                                                                               |
+| -------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| `DATABASE_URL`                   | Postgres connection string (Vercel Postgres/Neon recommended).                                                                            |
+| `NEXT_PUBLIC_ADMIN_PIN_HASH`     | SHA-256 hash of the hidden admin PIN.                                                                                                     |
+| `NEXT_PUBLIC_WHATSAPP_NUMBER`    | WhatsApp number (digits only, include country code) receiving orders. You can also set `WHATSAPP_NUMBER` if you prefer a server-only env. |
+| `UPLOADTHING_SECRET`             | UploadThing server secret.                                                                                                                |
+| `UPLOADTHING_APP_ID`             | UploadThing app ID.                                                                                                                       |
+| `NEXT_PUBLIC_UPLOADTHING_APP_ID` | Same value as `UPLOADTHING_APP_ID`, exposed to the client.                                                                                |
 
 ### Admin PIN hash
 

@@ -17,7 +17,10 @@ export async function POST(request: Request) {
   const body = await request.json();
   const parsed = heroTileSchema.safeParse(body);
   if (!parsed.success) {
-    return NextResponse.json({ message: parsed.error.message }, { status: 400 });
+    return NextResponse.json(
+      { message: parsed.error.message },
+      { status: 400 }
+    );
   }
 
   const { title, shortText, longText, imageUrl } = parsed.data;

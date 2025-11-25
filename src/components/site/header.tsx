@@ -102,7 +102,9 @@ export function Header() {
       <Dialog
         open={showDialog}
         onClose={closeDialog}
-        title={isUnlocked ? "Admin panel already unlocked" : "Mundough admin access"}
+        title={
+          isUnlocked ? "Admin panel already unlocked" : "Mundough admin access"
+        }
         footer={
           isUnlocked ? (
             <Button onClick={closeDialog}>Close</Button>
@@ -114,11 +116,17 @@ export function Header() {
         }
       >
         {isUnlocked ? (
-            <p className="text-sm text-cocoa/60">
-              {"You're already in. Head to the admin page or lock the gate when you're done."}
-            </p>
+          <p className="text-sm text-cocoa/60">
+            {
+              "You're already in. Head to the admin page or lock the gate when you're done."
+            }
+          </p>
         ) : (
-          <form id="admin-login-form" onSubmit={handleSubmit} className="space-y-4">
+          <form
+            id="admin-login-form"
+            onSubmit={handleSubmit}
+            className="space-y-4"
+          >
             <div>
               <Label htmlFor="pin">Bakery PIN</Label>
               <Input
@@ -133,7 +141,8 @@ export function Header() {
               />
             </div>
             <p className="text-xs text-cocoa/60">
-              Tap the Mundough wordmark {TAP_THRESHOLD} times whenever you need to reopen this prompt.
+              Tap the Mundough wordmark {TAP_THRESHOLD} times whenever you need
+              to reopen this prompt.
             </p>
           </form>
         )}

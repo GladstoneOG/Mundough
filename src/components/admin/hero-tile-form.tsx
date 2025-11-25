@@ -50,7 +50,9 @@ export function HeroTileForm({
         <Label htmlFor="title">Title</Label>
         <Input id="title" {...form.register("title")} />
         {form.formState.errors.title ? (
-          <p className="text-xs text-raspberry">{form.formState.errors.title.message}</p>
+          <p className="text-xs text-raspberry">
+            {form.formState.errors.title.message}
+          </p>
         ) : null}
       </div>
 
@@ -58,7 +60,9 @@ export function HeroTileForm({
         <Label htmlFor="shortText">Short blurb</Label>
         <Textarea id="shortText" rows={2} {...form.register("shortText")} />
         {form.formState.errors.shortText ? (
-          <p className="text-xs text-raspberry">{form.formState.errors.shortText.message}</p>
+          <p className="text-xs text-raspberry">
+            {form.formState.errors.shortText.message}
+          </p>
         ) : null}
       </div>
 
@@ -66,7 +70,9 @@ export function HeroTileForm({
         <Label htmlFor="longText">Long description</Label>
         <Textarea id="longText" rows={5} {...form.register("longText")} />
         {form.formState.errors.longText ? (
-          <p className="text-xs text-raspberry">{form.formState.errors.longText.message}</p>
+          <p className="text-xs text-raspberry">
+            {form.formState.errors.longText.message}
+          </p>
         ) : null}
       </div>
 
@@ -76,10 +82,14 @@ export function HeroTileForm({
           endpoint="heroTileImage"
           label="Hero tile image"
           value={form.watch("imageUrl")}
-          onChange={(url) => form.setValue("imageUrl", url, { shouldValidate: true })}
+          onChange={(url) =>
+            form.setValue("imageUrl", url, { shouldValidate: true })
+          }
         />
         {form.formState.errors.imageUrl ? (
-          <p className="text-xs text-raspberry">{form.formState.errors.imageUrl.message}</p>
+          <p className="text-xs text-raspberry">
+            {form.formState.errors.imageUrl.message}
+          </p>
         ) : null}
       </div>
 

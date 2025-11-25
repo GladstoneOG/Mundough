@@ -11,7 +11,9 @@ import { adminFetch } from "@/lib/admin-fetch";
 import { useAdminStore } from "@/stores/admin/admin-store";
 import type { HeroTileInput, ProductInput } from "@/lib/validators";
 
-export type ProductWithVariations = Product & { variations: ProductVariation[] };
+export type ProductWithVariations = Product & {
+  variations: ProductVariation[];
+};
 
 type DialogState =
   | { type: "tile"; mode: "create"; payload?: null }
@@ -73,12 +75,17 @@ export function AdminDashboard() {
       };
 
       if (!values.id) {
-        const response = await adminFetch<{ tile: HeroTile }>("/api/hero-tiles", {
-          method: "POST",
-          body: JSON.stringify(basePayload),
-          pinHash,
-        });
-        setTiles((current) => [...current, response.tile].sort((a, b) => a.order - b.order));
+        const response = await adminFetch<{ tile: HeroTile }>(
+          "/api/hero-tiles",
+          {
+            method: "POST",
+            body: JSON.stringify(basePayload),
+            pinHash,
+          }
+        );
+        setTiles((current) =>
+          [...current, response.tile].sort((a, b) => a.order - b.order)
+        );
         toast.success("Tile added");
       } else {
         const existing = tiles.find((tile) => tile.id === values.id);
@@ -86,8 +93,8 @@ export function AdminDashboard() {
           typeof values.order === "number"
             ? values.order
             : existing
-              ? existing.order - 1
-              : 0;
+            ? existing.order - 1
+            : 0;
 
         const response = await adminFetch<{ tile: HeroTile }>(
           `/api/hero-tiles/${values.id}`,
@@ -95,12 +102,12 @@ export function AdminDashboard() {
             method: "PATCH",
             pinHash,
             body: JSON.stringify({ ...basePayload, order: targetOrder }),
-          },
+          }
         );
         setTiles((current) =>
           current
             .map((tile) => (tile.id === values.id ? response.tile : tile))
-            .sort((a, b) => a.order - b.order),
+            .sort((a, b) => a.order - b.order)
         );
         toast.success("Tile updated");
       }
@@ -122,7 +129,7 @@ export function AdminDashboard() {
       setTiles((current) =>
         current
           .filter((existing) => existing.id !== tile.id)
-          .map((item, index) => ({ ...item, order: index + 1 })),
+          .map((item, index) => ({ ...item, order: index + 1 }))
       );
       toast.success("Tile removed");
     } catch (error) {
@@ -140,25 +147,30 @@ export function AdminDashboard() {
     const ordered = [...tiles];
     const [removed] = ordered.splice(index, 1);
     ordered.splice(target, 0, removed);
-    setTiles(ordered.map((item, position) => ({ ...item, order: position + 1 })));
+    setTiles(
+      ordered.map((item, position) => ({ ...item, order: position + 1 }))
+    );
 
     try {
-      const response = await adminFetch<{ tile: HeroTile }>(`/api/hero-tiles/${tile.id}`, {
-        method: "PATCH",
-        pinHash,
-        body: JSON.stringify({
-          title: tile.title,
-          shortText: tile.shortText,
-          longText: tile.longText,
-          imageUrl: tile.imageUrl,
-          order: target,
-        }),
-      });
+      const response = await adminFetch<{ tile: HeroTile }>(
+        `/api/hero-tiles/${tile.id}`,
+        {
+          method: "PATCH",
+          pinHash,
+          body: JSON.stringify({
+            title: tile.title,
+            shortText: tile.shortText,
+            longText: tile.longText,
+            imageUrl: tile.imageUrl,
+            order: target,
+          }),
+        }
+      );
 
       setTiles((current) =>
         current
           .map((item) => (item.id === tile.id ? response.tile : item))
-          .sort((a, b) => a.order - b.order),
+          .sort((a, b) => a.order - b.order)
       );
     } catch (error) {
       console.error(error);
@@ -190,7 +202,7 @@ export function AdminDashboard() {
             method: "POST",
             pinHash,
             body: JSON.stringify(payload),
-          },
+          }
         );
         setProducts((current) => [response.product, ...current]);
         toast.success("Product added");
@@ -201,10 +213,12 @@ export function AdminDashboard() {
             method: "PATCH",
             pinHash,
             body: JSON.stringify(payload),
-          },
+          }
         );
         setProducts((current) =>
-          current.map((product) => (product.id === values.id ? response.product : product)),
+          current.map((product) =>
+            product.id === values.id ? response.product : product
+          )
         );
         toast.success("Product updated");
       }
@@ -223,7 +237,9 @@ export function AdminDashboard() {
         method: "DELETE",
         pinHash,
       });
-      setProducts((current) => current.filter((existing) => existing.id !== product.id));
+      setProducts((current) =>
+        current.filter((existing) => existing.id !== product.id)
+      );
       toast.success("Product removed");
     } catch (error) {
       console.error(error);
@@ -236,7 +252,8 @@ export function AdminDashboard() {
       <div className="space-y-6 rounded-3xl bg-cream/70 p-12 text-center shadow-lg">
         <h1 className="font-serif text-3xl">Admin access required</h1>
         <p className="text-sm text-cocoa/70">
-          Tap the Mundough wordmark in the header five times, enter the PIN, and revisit this page to manage tiles and products.
+          Tap the Mundough wordmark in the header five times, enter the PIN, and
+          revisit this page to manage tiles and products.
         </p>
       </div>
     );
@@ -257,10 +274,13 @@ export function AdminDashboard() {
           <div>
             <h2 className="font-serif text-2xl">Home hero tiles</h2>
             <p className="text-sm text-cocoa/70">
-              Drag order by using the move buttons. Updates go live as soon as you save.
+              Drag order by using the move buttons. Updates go live as soon as
+              you save.
             </p>
           </div>
-          <Button onClick={() => setDialog({ type: "tile", mode: "create" })}>New tile</Button>
+          <Button onClick={() => setDialog({ type: "tile", mode: "create" })}>
+            New tile
+          </Button>
         </div>
 
         {loading && !tiles.length ? (
@@ -274,7 +294,9 @@ export function AdminDashboard() {
               className="flex flex-col gap-4 rounded-2xl border border-caramel/20 bg-white/80 p-4 md:flex-row md:items-center md:justify-between"
             >
               <div>
-                <p className="text-xs uppercase tracking-[0.3em] text-caramel/70">#{index + 1}</p>
+                <p className="text-xs uppercase tracking-[0.3em] text-caramel/70">
+                  #{index + 1}
+                </p>
                 <h3 className="font-semibold text-cocoa">{tile.title}</h3>
                 <p className="text-sm text-cocoa/70">{tile.shortText}</p>
               </div>
@@ -295,7 +317,9 @@ export function AdminDashboard() {
                 </Button>
                 <Button
                   variant="outline"
-                  onClick={() => setDialog({ type: "tile", mode: "edit", payload: tile })}
+                  onClick={() =>
+                    setDialog({ type: "tile", mode: "edit", payload: tile })
+                  }
                 >
                   Edit
                 </Button>
@@ -313,10 +337,16 @@ export function AdminDashboard() {
           <div>
             <h2 className="font-serif text-2xl">Store catalog</h2>
             <p className="text-sm text-cocoa/70">
-              {"Toggle availability, adjust pricing, and keep variations in sync with what's in the case."}
+              {
+                "Toggle availability, adjust pricing, and keep variations in sync with what's in the case."
+              }
             </p>
           </div>
-          <Button onClick={() => setDialog({ type: "product", mode: "create" })}>New product</Button>
+          <Button
+            onClick={() => setDialog({ type: "product", mode: "create" })}
+          >
+            New product
+          </Button>
         </div>
 
         {loading && !products.length ? (
@@ -339,11 +369,20 @@ export function AdminDashboard() {
                 <div className="flex flex-wrap gap-2">
                   <Button
                     variant="outline"
-                    onClick={() => setDialog({ type: "product", mode: "edit", payload: product })}
+                    onClick={() =>
+                      setDialog({
+                        type: "product",
+                        mode: "edit",
+                        payload: product,
+                      })
+                    }
                   >
                     Edit
                   </Button>
-                  <Button variant="ghost" onClick={() => handleProductDelete(product)}>
+                  <Button
+                    variant="ghost"
+                    onClick={() => handleProductDelete(product)}
+                  >
                     Delete
                   </Button>
                 </div>
@@ -352,7 +391,9 @@ export function AdminDashboard() {
               <ul className="space-y-2 text-sm text-cocoa/70">
                 {product.variations.map((variation) => (
                   <li key={variation.id}>
-                    {variation.name} - {currency.format(variation.priceCents / 100)} - {variation.sku ?? "No SKU"}
+                    {variation.name} -{" "}
+                    {currency.format(variation.priceCents / 100)} -{" "}
+                    {variation.sku ?? "No SKU"}
                   </li>
                 ))}
               </ul>
@@ -372,7 +413,9 @@ export function AdminDashboard() {
             initial={dialog.mode === "edit" ? dialog.payload : undefined}
             onSubmit={handleTileSubmit}
             onCancel={closeDialog}
-            submitLabel={dialog.mode === "edit" ? "Save changes" : "Publish tile"}
+            submitLabel={
+              dialog.mode === "edit" ? "Save changes" : "Publish tile"
+            }
           />
         ) : null}
       </Dialog>
@@ -388,7 +431,9 @@ export function AdminDashboard() {
             initial={dialog.mode === "edit" ? dialog.payload : undefined}
             onSubmit={handleProductSubmit}
             onCancel={closeDialog}
-            submitLabel={dialog.mode === "edit" ? "Save changes" : "Add product"}
+            submitLabel={
+              dialog.mode === "edit" ? "Save changes" : "Add product"
+            }
           />
         ) : null}
       </Dialog>

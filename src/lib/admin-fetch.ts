@@ -5,7 +5,7 @@ export async function adminFetch<T>(
     ...init
   }: RequestInit & {
     pinHash: string;
-  },
+  }
 ): Promise<T> {
   const headers = new Headers(init.headers);
   headers.set("Content-Type", "application/json");

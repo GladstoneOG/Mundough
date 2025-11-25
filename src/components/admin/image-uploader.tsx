@@ -13,7 +13,12 @@ type ImageUploaderProps = {
   onChange: (url: string) => void;
 };
 
-export function ImageUploader({ endpoint, label, value, onChange }: ImageUploaderProps) {
+export function ImageUploader({
+  endpoint,
+  label,
+  value,
+  onChange,
+}: ImageUploaderProps) {
   const pinHash = getAdminPinHash();
 
   if (!pinHash) {
@@ -28,7 +33,13 @@ export function ImageUploader({ endpoint, label, value, onChange }: ImageUploade
     <div className="space-y-4">
       <div className="aspect-[16/9] w-full overflow-hidden rounded-2xl border border-dashed border-caramel/30 bg-cream/60">
         {value ? (
-          <Image src={value} alt={label} width={800} height={450} className="h-full w-full object-cover" />
+          <Image
+            src={value}
+            alt={label}
+            width={800}
+            height={450}
+            className="h-full w-full object-cover"
+          />
         ) : (
           <div className="flex h-full items-center justify-center text-sm text-cocoa/50">
             No image selected yet
@@ -49,7 +60,8 @@ export function ImageUploader({ endpoint, label, value, onChange }: ImageUploade
           toast.error(error.message ?? "Upload failed");
         }}
         appearance={{
-          button: "ut-ready:border ut-ready:border-caramel/40 ut-ready:bg-white ut-ready:text-caramel ut-uploading:bg-caramel/80 ut-uploading:text-cream",
+          button:
+            "ut-ready:border ut-ready:border-caramel/40 ut-ready:bg-white ut-ready:text-caramel ut-uploading:bg-caramel/80 ut-uploading:text-cream",
         }}
         content={{
           button: value ? "Replace image" : "Upload image",

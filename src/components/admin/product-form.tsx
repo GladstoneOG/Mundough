@@ -24,7 +24,12 @@ const emptyVariation = (): ProductInput["variations"][number] => ({
   sku: undefined,
 });
 
-export function ProductForm({ initial, onSubmit, onCancel, submitLabel = "Save product" }: ProductFormProps) {
+export function ProductForm({
+  initial,
+  onSubmit,
+  onCancel,
+  submitLabel = "Save product",
+}: ProductFormProps) {
   const [isSaving, setIsSaving] = useState(false);
   const defaultVariations = useMemo(
     () =>
@@ -36,7 +41,7 @@ export function ProductForm({ initial, onSubmit, onCancel, submitLabel = "Save p
             sku: variation.sku ?? undefined,
           }))
         : [emptyVariation()],
-    [initial],
+    [initial]
   );
 
   const form = useForm<ProductInput>({
@@ -50,7 +55,10 @@ export function ProductForm({ initial, onSubmit, onCancel, submitLabel = "Save p
     },
   });
 
-  const { fields, append, remove } = useFieldArray({ control: form.control, name: "variations" });
+  const { fields, append, remove } = useFieldArray({
+    control: form.control,
+    name: "variations",
+  });
 
   const handleSubmit = form.handleSubmit(async (values) => {
     setIsSaving(true);
@@ -67,7 +75,9 @@ export function ProductForm({ initial, onSubmit, onCancel, submitLabel = "Save p
         <Label htmlFor="title">Product name</Label>
         <Input id="title" {...form.register("title")} />
         {form.formState.errors.title ? (
-          <p className="text-xs text-raspberry">{form.formState.errors.title.message}</p>
+          <p className="text-xs text-raspberry">
+            {form.formState.errors.title.message}
+          </p>
         ) : null}
       </div>
 
@@ -75,7 +85,9 @@ export function ProductForm({ initial, onSubmit, onCancel, submitLabel = "Save p
         <Label htmlFor="description">Description</Label>
         <Textarea id="description" rows={4} {...form.register("description")} />
         {form.formState.errors.description ? (
-          <p className="text-xs text-raspberry">{form.formState.errors.description.message}</p>
+          <p className="text-xs text-raspberry">
+            {form.formState.errors.description.message}
+          </p>
         ) : null}
       </div>
 
@@ -85,10 +97,14 @@ export function ProductForm({ initial, onSubmit, onCancel, submitLabel = "Save p
           endpoint="productImage"
           label="Product photo"
           value={form.watch("imageUrl")}
-          onChange={(url) => form.setValue("imageUrl", url, { shouldValidate: true })}
+          onChange={(url) =>
+            form.setValue("imageUrl", url, { shouldValidate: true })
+          }
         />
         {form.formState.errors.imageUrl ? (
-          <p className="text-xs text-raspberry">{form.formState.errors.imageUrl.message}</p>
+          <p className="text-xs text-raspberry">
+            {form.formState.errors.imageUrl.message}
+          </p>
         ) : null}
       </div>
 
@@ -113,10 +129,14 @@ export function ProductForm({ initial, onSubmit, onCancel, submitLabel = "Save p
         <div className="space-y-4">
           {fields.map((field, index) => {
             const error = form.formState.errors.variations?.[index];
-            const priceCents = form.watch(`variations.${index}.priceCents`) ?? 0;
+            const priceCents =
+              form.watch(`variations.${index}.priceCents`) ?? 0;
             const priceValue = priceCents / 100;
             return (
-              <div key={field.id} className="rounded-2xl border border-caramel/20 bg-cream/70 p-4">
+              <div
+                key={field.id}
+                className="rounded-2xl border border-caramel/20 bg-cream/70 p-4"
+              >
                 <input
                   type="hidden"
                   {...form.register(`variations.${index}.priceCents`, {
@@ -125,26 +145,37 @@ export function ProductForm({ initial, onSubmit, onCancel, submitLabel = "Save p
                 />
                 <div className="grid gap-2">
                   <Label htmlFor={`variation-name-${field.id}`}>Name</Label>
-                  <Input id={`variation-name-${field.id}`} {...form.register(`variations.${index}.name`)} />
+                  <Input
+                    id={`variation-name-${field.id}`}
+                    {...form.register(`variations.${index}.name`)}
+                  />
                   {error?.name ? (
-                    <p className="text-xs text-raspberry">{error.name.message}</p>
+                    <p className="text-xs text-raspberry">
+                      {error.name.message}
+                    </p>
                   ) : null}
                 </div>
 
                 <div className="mt-3 grid gap-2">
-                  <Label htmlFor={`variation-sku-${field.id}`}>SKU / Note</Label>
+                  <Label htmlFor={`variation-sku-${field.id}`}>
+                    SKU / Note
+                  </Label>
                   <Input
                     id={`variation-sku-${field.id}`}
                     placeholder="Optional"
                     {...form.register(`variations.${index}.sku`)}
                   />
                   {error?.sku ? (
-                    <p className="text-xs text-raspberry">{error.sku.message as string}</p>
+                    <p className="text-xs text-raspberry">
+                      {error.sku.message as string}
+                    </p>
                   ) : null}
                 </div>
 
                 <div className="mt-3 grid gap-2">
-                  <Label htmlFor={`variation-price-${field.id}`}>Price (USD)</Label>
+                  <Label htmlFor={`variation-price-${field.id}`}>
+                    Price (USD)
+                  </Label>
                   <Input
                     id={`variation-price-${field.id}`}
                     type="number"
@@ -152,14 +183,22 @@ export function ProductForm({ initial, onSubmit, onCancel, submitLabel = "Save p
                     step="0.5"
                     value={Number.isFinite(priceValue) ? priceValue : 0}
                     onChange={(event) => {
-                      const nextValue = Math.round(parseFloat(event.target.value || "0") * 100);
-                      form.setValue(`variations.${index}.priceCents`, isNaN(nextValue) ? 0 : nextValue, {
-                        shouldValidate: true,
-                      });
+                      const nextValue = Math.round(
+                        parseFloat(event.target.value || "0") * 100
+                      );
+                      form.setValue(
+                        `variations.${index}.priceCents`,
+                        isNaN(nextValue) ? 0 : nextValue,
+                        {
+                          shouldValidate: true,
+                        }
+                      );
                     }}
                   />
                   {error?.priceCents ? (
-                    <p className="text-xs text-raspberry">{error.priceCents.message}</p>
+                    <p className="text-xs text-raspberry">
+                      {error.priceCents.message}
+                    </p>
                   ) : null}
                 </div>
 

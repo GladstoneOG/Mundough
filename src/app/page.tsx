@@ -16,12 +16,14 @@ export default async function HomePage() {
           Cookies mixed by hand, baked to order, and delivered with a smile.
         </h1>
         <p className="max-w-2xl text-lg text-cocoa/75">
-          Mundough celebrates the warmth of the oven and the joy of sharing. Browse our seasonal
-          cookies and let us know what to bake next.
+          Mundough celebrates the warmth of the oven and the joy of sharing.
+          Browse our seasonal cookies and let us know what to bake next.
         </p>
       </section>
 
-      <Suspense fallback={<div className="mt-12 text-cocoa/60">Loading treats...</div>}>
+      <Suspense
+        fallback={<div className="mt-12 text-cocoa/60">Loading treats...</div>}
+      >
         <div className="mt-12">
           <HeroTiles tiles={tiles} />
         </div>

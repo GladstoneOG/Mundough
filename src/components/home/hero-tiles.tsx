@@ -15,9 +15,9 @@ export function HeroTiles({ tiles }: HeroTilesProps) {
   if (!tiles.length) {
     return (
       <section className="rounded-3xl bg-cream/80 p-12 text-center shadow-lg">
-           <p className="font-serif text-2xl text-cocoa/60">
-             {"We're warming up the oven. Check back soon for fresh treats."}
-           </p>
+        <p className="font-serif text-2xl text-cocoa/60">
+          {"We're warming up the oven. Check back soon for fresh treats."}
+        </p>
       </section>
     );
   }

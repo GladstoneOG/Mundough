@@ -6,10 +6,7 @@ export type LabelProps = LabelHTMLAttributes<HTMLLabelElement>;
 export function Label({ className, ...props }: LabelProps) {
   return (
     <label
-      className={twMerge(
-        "text-sm font-medium text-cocoa/80",
-        className,
-      )}
+      className={twMerge("text-sm font-medium text-cocoa/80", className)}
       {...props}
     />
   );

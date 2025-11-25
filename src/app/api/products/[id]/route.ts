@@ -14,10 +14,15 @@ export async function PATCH(request: Request, { params }: Params) {
   const body = await request.json();
   const parsed = productSchema.safeParse(body);
   if (!parsed.success) {
-    return NextResponse.json({ message: parsed.error.message }, { status: 400 });
+    return NextResponse.json(
+      { message: parsed.error.message },
+      { status: 400 }
+    );
   }
 
-  const existing = await prisma.product.findUnique({ where: { id: params.id } });
+  const existing = await prisma.product.findUnique({
+    where: { id: params.id },
+  });
   if (!existing) {
     return NextResponse.json({ message: "Product not found" }, { status: 404 });
   }

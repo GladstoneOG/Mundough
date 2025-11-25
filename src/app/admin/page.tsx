@@ -1,9 +1,5 @@
 import type { Metadata } from "next";
-import dynamic from "next/dynamic";
-
-const AdminDashboard = dynamic(() => import("@/components/admin/admin-dashboard").then((mod) => mod.AdminDashboard), {
-  ssr: false,
-});
+import { AdminPageClient } from "@/components/admin/admin-page-client";
 
 export const metadata: Metadata = {
   title: "Admin • Mundough",
@@ -11,5 +7,5 @@ export const metadata: Metadata = {
 };
 
 export default function AdminPage() {
-  return <AdminDashboard />;
+  return <AdminPageClient />;
 }
