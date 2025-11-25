@@ -1,0 +1,43 @@
+{
+  "name": "mundough",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint . --ext .ts,.tsx",
+    "postinstall": "prisma generate",
+    "db:push": "prisma db push"
+  },
+  "dependencies": {
+    "@hookform/resolvers": "^3.4.2",
+    "@prisma/client": "^5.19.1",
+    "@uploadthing/react": "^7.1.0",
+    "@vercel/postgres": "^0.10.0",
+    "clsx": "^2.1.1",
+    "lucide-react": "^0.464.0",
+    "next": "16.0.4",
+    "react": "19.2.0",
+    "react-dom": "19.2.0",
+    "react-hook-form": "^7.53.0",
+    "react-hot-toast": "^2.4.1",
+    "resend": "^3.4.0",
+    "tailwind-merge": "^2.5.4",
+    "uploadthing": "^7.1.0",
+    "zustand": "^4.5.5",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "babel-plugin-react-compiler": "1.0.0",
+    "eslint": "^9",
+    "eslint-config-next": "16.0.4",
+    "prisma": "^5.19.1",
+    "tailwindcss": "^4",
+    "typescript": "^5"
+  }
+}
