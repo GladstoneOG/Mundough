@@ -77,9 +77,12 @@ export function ShopExperience({ products }: Props) {
       body: JSON.stringify(payload),
     });
 
+    const body = (await response.json().catch(() => null)) as
+      | { message?: string; redirectUrl?: string }
+      | null;
+
     if (!response.ok) {
-      const body = await response.json().catch(() => ({}));
-      toast.error(body.message ?? "We couldn't send your order. Try again.");
+      toast.error(body?.message ?? "We couldn't prepare your order. Try again.");
       return;
     }
 
@@ -87,7 +90,14 @@ export function ShopExperience({ products }: Props) {
     form.reset();
     setCheckoutOpen(false);
     setCartOpen(false);
-    toast.success("We'll get in touch shortly.");
+
+    if (body?.redirectUrl) {
+      if (typeof window !== "undefined") {
+        window.location.assign(body.redirectUrl);
+      }
+    } else {
+      toast.success("Order summary ready—send it via WhatsApp.");
+    }
   });
 
   const cartWithTotals = useMemo(
@@ -105,7 +115,7 @@ export function ShopExperience({ products }: Props) {
         <div className="space-y-2">
           <h1 className="font-serif text-4xl font-semibold">Shop Mundough</h1>
           <p className="text-cocoa/70">
-            Choose your cravings, add a note, and we'll confirm availability and delivery windows with you directly.
+            {"Choose your cravings, add a note, and we'll confirm availability and delivery windows with you directly."}
           </p>
         </div>
         <Button onClick={() => setCartOpen(true)} className="relative">
@@ -269,12 +279,15 @@ export function ShopExperience({ products }: Props) {
               Cancel
             </Button>
             <Button type="button" onClick={() => onSubmit()}>
-              Send order
+              Open WhatsApp
             </Button>
           </>
         }
       >
         <form className="space-y-4" onSubmit={onSubmit}>
+          <p className="text-sm text-cocoa/60">
+            {"We will redirect you to WhatsApp with the order summary so you can confirm the details."}
+          </p>
           <div className="grid gap-2">
             <label className="text-sm font-medium text-cocoa/80" htmlFor="name">
               Full name

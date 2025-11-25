@@ -114,9 +114,9 @@ export function Header() {
         }
       >
         {isUnlocked ? (
-          <p className="text-sm text-cocoa/80">
-            You're already in. Head to the admin page or lock the gate when you're done.
-          </p>
+            <p className="text-sm text-cocoa/60">
+              {"You're already in. Head to the admin page or lock the gate when you're done."}
+            </p>
         ) : (
           <form id="admin-login-form" onSubmit={handleSubmit} className="space-y-4">
             <div>

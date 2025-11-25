@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { checkoutSchema } from "@/lib/validators";
-import { sendCheckoutEmail } from "@/lib/email";
+import { config } from "@/lib/config";
 
 export async function POST(request: Request) {
   const body = await request.json().catch(() => null);
@@ -23,15 +23,17 @@ export async function POST(request: Request) {
 
   type IncomingItem = { productId: string; variationId: string; quantity: number };
 
-  const items = body.items.filter((item: unknown): item is IncomingItem =>
-    Boolean(
-      item &&
-        typeof item === "object" &&
-        typeof (item as any).productId === "string" &&
-        typeof (item as any).variationId === "string" &&
-        typeof (item as any).quantity === "number",
-    ),
-  );
+  const candidateItems = Array.isArray(body.items) ? body.items : [];
+
+  const items = candidateItems.filter((item: unknown): item is IncomingItem => {
+    if (!item || typeof item !== "object") return false;
+    const record = item as Record<string, unknown>;
+    return (
+      typeof record.productId === "string" &&
+      typeof record.variationId === "string" &&
+      typeof record.quantity === "number"
+    );
+  });
 
   if (items.length === 0) {
     return NextResponse.json({ message: "Invalid line items" }, { status: 400 });
@@ -71,11 +73,38 @@ export async function POST(request: Request) {
     0,
   );
 
-  await sendCheckoutEmail({
-    contact: contactResult.data,
-    items: detailedItems,
-    totalCents,
+  const phoneDigits = config.whatsappNumber.replace(/[^0-9]/g, "");
+  if (!phoneDigits) {
+    return NextResponse.json(
+      { message: "WhatsApp number is not configured" },
+      { status: 500 },
+    );
+  }
+
+  const currency = new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
   });
 
-  return NextResponse.json({ ok: true });
+  const lines = detailedItems
+    .map((item: (typeof detailedItems)[number]) =>
+      `• ${item.quantity} x ${item.productTitle} (${item.variationName}) - ${currency.format(
+        item.priceCents / 100,
+      )}`,
+    )
+    .join("\n");
+
+  const contact = contactResult.data;
+
+  const message = `Hi! I'd love to order from ${config.siteName}.\n\n` +
+    `Name: ${contact.name}\n` +
+    (contact.email ? `Email: ${contact.email}\n` : "") +
+    `Phone: ${contact.phone}\n` +
+    `Address: ${contact.address}\n` +
+    (contact.notes ? `Notes: ${contact.notes}\n` : "") +
+    `\nOrder:\n${lines}\n\nTotal: ${currency.format(totalCents / 100)}\n\nSent from mundough.com`;
+
+  const redirectUrl = `https://wa.me/${phoneDigits}?text=${encodeURIComponent(message)}`;
+
+  return NextResponse.json({ ok: true, redirectUrl });
 }

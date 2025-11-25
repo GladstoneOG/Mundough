@@ -313,7 +313,7 @@ export function AdminDashboard() {
           <div>
             <h2 className="font-serif text-2xl">Store catalog</h2>
             <p className="text-sm text-cocoa/70">
-              Toggle availability, adjust pricing, and keep variations in sync with what's in the case.
+              {"Toggle availability, adjust pricing, and keep variations in sync with what's in the case."}
             </p>
           </div>
           <Button onClick={() => setDialog({ type: "product", mode: "create" })}>New product</Button>

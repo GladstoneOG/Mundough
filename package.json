@@ -22,7 +22,6 @@
     "react-dom": "19.2.0",
     "react-hook-form": "^7.53.0",
     "react-hot-toast": "^2.4.1",
-    "resend": "^3.4.0",
     "tailwind-merge": "^2.5.4",
     "uploadthing": "^7.1.0",
     "zustand": "^4.5.5",

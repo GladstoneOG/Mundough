@@ -17,7 +17,7 @@ const STORAGE_KEY = "mundough-admin";
 
 export const useAdminStore = create<AdminState & AdminActions>()(
   persist(
-    (set, get) => ({
+    (set) => ({
       pinHash: null,
       isUnlocked: false,
       unlock: async (pin: string) => {

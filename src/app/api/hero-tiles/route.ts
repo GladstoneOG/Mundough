@@ -11,7 +11,7 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
-  const adminCheck = enforceAdmin(request as any);
+  const adminCheck = enforceAdmin(request);
   if (adminCheck) return adminCheck;
 
   const body = await request.json();

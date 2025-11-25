@@ -8,7 +8,7 @@ Artisan cookie storefront built with Next.js 16 App Router, Prisma, and Tailwind
 - Tailwind CSS v4
 - Prisma ORM targeting @vercel/postgres
 - UploadThing for image handling
-- Resend for checkout notification emails
+- WhatsApp click-to-chat handoff for checkout
 - Zustand + React Hook Form on the client side
 
 ## Local setup
@@ -40,10 +40,8 @@ Artisan cookie storefront built with Next.js 16 App Router, Prisma, and Tailwind
 | Name | Description |
 | --- | --- |
 | `DATABASE_URL` | Postgres connection string (Vercel Postgres/Neon recommended). |
-| `RESEND_API_KEY` | Resend API key used for checkout email notifications. |
-| `CHECKOUT_NOTIFICATION_EMAIL` | Recipient address that receives cart submissions. |
-| `CHECKOUT_FROM_EMAIL` | Verified Resend sender (e.g. `mundough@yourdomain.com`). |
 | `NEXT_PUBLIC_ADMIN_PIN_HASH` | SHA-256 hash of the hidden admin PIN. |
+| `NEXT_PUBLIC_WHATSAPP_NUMBER` | WhatsApp number (digits only, include country code) receiving orders. You can also set `WHATSAPP_NUMBER` if you prefer a server-only env. |
 | `UPLOADTHING_SECRET` | UploadThing server secret. |
 | `UPLOADTHING_APP_ID` | UploadThing app ID. |
 | `NEXT_PUBLIC_UPLOADTHING_APP_ID` | Same value as `UPLOADTHING_APP_ID`, exposed to the client. |
@@ -62,9 +60,9 @@ Drop the resulting hash into `NEXT_PUBLIC_ADMIN_PIN_HASH`. The plain PIN never s
 
 Create an UploadThing project, copy the App ID/Secret to your `.env`, and add the domain `utfs.io` to `next.config.ts` is already configured. Uploaded images automatically return a CDN URL that is stored with each tile/product.
 
-## Emails via Resend
+## WhatsApp order handoff
 
-Checkout submissions call `/api/checkout`, which re-validates the cart against the database and sends a summary email via Resend. Make sure the sender address is verified in your Resend dashboard.
+Checkout submissions call `/api/checkout`, which re-validates the cart against the database and then redirects the customer to WhatsApp with a pre-filled message containing the order summary. Configure `NEXT_PUBLIC_WHATSAPP_NUMBER` (digits only, include the country code) so the handoff opens the right conversation.
 
 ## Database management
 
