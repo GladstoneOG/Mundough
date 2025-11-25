@@ -4,14 +4,19 @@ import { heroTileSchema } from "@/lib/validators";
 import { enforceAdmin } from "@/lib/admin-auth";
 import { reorderHeroTiles } from "@/lib/reorder";
 
-type Params = {
-  params: { id: string };
+type RouteContext = {
+  params: Promise<{ id: string }> | { id: string };
 };
 
-export async function PATCH(request: Request, { params }: Params) {
+const resolveParams = async (context: RouteContext) => {
+  return "then" in context.params ? await context.params : context.params;
+};
+
+export async function PATCH(request: Request, context: RouteContext) {
   const adminCheck = enforceAdmin(request);
   if (adminCheck) return adminCheck;
 
+  const params = await resolveParams(context);
   const body = await request.json();
   const parsed = heroTileSchema.safeParse(body);
   if (!parsed.success) {
@@ -20,7 +25,6 @@ export async function PATCH(request: Request, { params }: Params) {
       { status: 400 }
     );
   }
-
   const tile = await prisma.heroTile.findUnique({ where: { id: params.id } });
   if (!tile) {
     return NextResponse.json({ message: "Tile not found" }, { status: 404 });
@@ -45,10 +49,11 @@ export async function PATCH(request: Request, { params }: Params) {
   return NextResponse.json({ tile: updated });
 }
 
-export async function DELETE(request: Request, { params }: Params) {
+export async function DELETE(request: Request, context: RouteContext) {
   const adminCheck = enforceAdmin(request);
   if (adminCheck) return adminCheck;
 
+  const params = await resolveParams(context);
   await prisma.heroTile.delete({ where: { id: params.id } });
 
   const remaining = await prisma.heroTile.findMany({

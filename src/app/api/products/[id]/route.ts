@@ -3,14 +3,18 @@ import { prisma } from "@/lib/prisma";
 import { productSchema } from "@/lib/validators";
 import { enforceAdmin } from "@/lib/admin-auth";
 
-type Params = {
-  params: { id: string };
+type RouteContext = {
+  params: Promise<{ id: string }> | { id: string };
 };
 
-export async function PATCH(request: Request, { params }: Params) {
+const resolveParams = async (context: RouteContext) =>
+  "then" in context.params ? await context.params : context.params;
+
+export async function PATCH(request: Request, context: RouteContext) {
   const adminCheck = enforceAdmin(request);
   if (adminCheck) return adminCheck;
 
+  const params = await resolveParams(context);
   const body = await request.json();
   const parsed = productSchema.safeParse(body);
   if (!parsed.success) {
@@ -75,10 +79,11 @@ export async function PATCH(request: Request, { params }: Params) {
   return NextResponse.json({ product });
 }
 
-export async function DELETE(request: Request, { params }: Params) {
+export async function DELETE(request: Request, context: RouteContext) {
   const adminCheck = enforceAdmin(request);
   if (adminCheck) return adminCheck;
 
+  const params = await resolveParams(context);
   await prisma.product.delete({ where: { id: params.id } });
   return NextResponse.json({ ok: true });
 }
